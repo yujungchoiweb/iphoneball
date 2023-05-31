@@ -23,9 +23,17 @@
   <div id="ball"></div>
 
   <script>
-    // 사용자의 동의를 얻기 위한 처리
-    if (DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function') {
-      DeviceMotionEvent.requestPermission()
+    function handleOrientation(event) {
+      var x = event.beta;  // 기울기 X
+      var y = event.gamma; // 기울기 Y
+
+      var ball = document.getElementById("ball");
+      ball.style.top = (50 + y) + "%";
+      ball.style.left = (50 + x) + "%";
+    }
+
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      DeviceOrientationEvent.requestPermission()
         .then(permissionState => {
           if (permissionState === 'granted') {
             window.addEventListener("deviceorientation", handleOrientation, true);
@@ -34,15 +42,6 @@
         .catch(console.error);
     } else {
       window.addEventListener("deviceorientation", handleOrientation, true);
-    }
-
-    function handleOrientation(event) {
-      var x = event.beta;  // 기울기 X
-      var y = event.gamma; // 기울기 Y
-
-      var ball = document.getElementById("ball");
-      ball.style.top = (50 + y) + "%";
-      ball.style.left = (50 + x) + "%";
     }
   </script>
 </body>
